@@ -7,14 +7,17 @@ do_sysinfo_octeon() {
 	case "$machine" in
 	"UBNT_E100"*)
 		name="erlite"
+		machine="Ubiquiti EdgeRouter Lite"
 		;;
 
 	"UBNT_E200"*)
 		name="er"
+		machine="Ubiquiti EdgeRouter"
 		;;
 
 	"UBNT_E220"*)
 		name="erpro"
+		machine="Ubiquiti EdgeRouter Pro"
 		;;
 
 	*)
