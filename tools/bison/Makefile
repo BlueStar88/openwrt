@@ -7,24 +7,27 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bison
-PKG_VERSION:=3.1
+PKG_VERSION:=3.8.2
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@GNU/$(PKG_NAME)
-PKG_HASH:=7c2464ad6cb7b513b2c350a092d919327e1f63d12ff024836acbb504475da5c6
+PKG_HASH:=06c9e13bdf7eb24d4ceb6b59205a4f67c2c7e7213119644430fe82fbd14a0abb
+PKG_CPE_ID:=cpe:/a:gnu:bison
 
 HOST_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/host-build.mk
 
-define Host/Clean
-	-$(MAKE) -C $(HOST_BUILD_DIR) uninstall
-	$(call Host/Clean/Default)
-endef
+HOST_CONFIGURE_ARGS += --enable-threads=posix --disable-nls
 
 define Host/Install
 	$(call Host/Install/Default)
 	$(INSTALL_BIN) ./scripts/yacc $(STAGING_DIR_HOST)/bin/yacc
+endef
+
+define Host/Uninstall
+	rm -f $(STAGING_DIR_HOST)/bin/yacc
+	-$(call Host/Compile/Default,uninstall)
 endef
 
 $(eval $(call HostBuild))

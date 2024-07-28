@@ -190,7 +190,7 @@ static int ag71xx_mdio_probe(struct platform_device *pdev)
 	if (!mii_bus)
 		return -ENOMEM;
 
-	am->mdio_reset = of_reset_control_get_exclusive(np, "mdio");
+	am->mdio_reset = devm_reset_control_get_exclusive(amdev, "mdio");
 	builtin_switch = of_property_read_bool(np, "builtin-switch");
 
 	mii_bus->name = "ag71xx_mdio";
@@ -200,10 +200,6 @@ static int ag71xx_mdio_probe(struct platform_device *pdev)
 	mii_bus->priv = am;
 	mii_bus->parent = amdev;
 	snprintf(mii_bus->id, MII_BUS_ID_SIZE, "%s.%d", np->name, bus_count++);
-
-	if (!builtin_switch &&
-	    of_property_read_u32(np, "phy-mask", &mii_bus->phy_mask))
-		mii_bus->phy_mask = 0;
 
 	for (i = 0; i < PHY_MAX_ADDR; i++)
 		mii_bus->irq[i] = PHY_POLL;
